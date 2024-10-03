@@ -115,6 +115,16 @@ def obtener_receta(link):
         comida = "Otra"
         print(f"Error en tipo de ocasion: {e }")
     try:
+        filtros_prov = [tags.get_text(strip=True) for tags in detalles.find("div",{"class":"properties inline"}).contents[2:]]
+        filtros = []
+        for filtro in filtros_prov:
+            for tag in filtro.split(","):
+                if tag != "":
+                    filtros.append(tag.strip())
+    except Exception as e:
+        filtros = "generico"
+        print(f"Error en filtros: {e}")
+    try:
         dificultad = detalles.find("span",{"class":"property dificultad"}).get_text(strip=True)
     except Exception as e:
         dificultad = "No especificada"
@@ -126,13 +136,14 @@ def obtener_receta(link):
     except Exception as e:
         print(f"Error fatal en ingredientes o elaboracion: {e} se devuelve None")
         return None
-
+    receta['Imagen'] = sopa.find("img",{"alt":nombre}).get('src')
     receta['Comensales'] = comensales
     receta['Tiempo'] = duracion
     receta['Dificultad'] = dificultad
     receta['Ingredientes'] = lista_ing
     receta['Ocasion'] = comida
     receta['Elaboracion'] = elaboracion
+    receta['Filtros'] = filtros
     print(f"Todos los datos de la receta {nombre} han sido obtenidos.")
     return receta
 if __name__ == '__main__':
