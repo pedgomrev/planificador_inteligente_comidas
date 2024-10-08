@@ -110,9 +110,9 @@ def obtener_receta(link):
         duracion = "No especificada"
         print(f"Error en duracion: {e}")
     try:
-        comida = detalles.find("span",{"class":"property para"}).get_text(strip=True)
+        ocasion = detalles.find("span",{"class":"property para"}).get_text(strip=True)
     except Exception as e:
-        comida = "Otra"
+        ocasion = "Cualquier ocasión"
         print(f"Error en tipo de ocasion: {e }")
     try:
         filtros_prov = [tags.get_text(strip=True) for tags in detalles.find("div",{"class":"properties inline"}).contents[2:]]
@@ -141,7 +141,7 @@ def obtener_receta(link):
     receta['Tiempo'] = duracion
     receta['Dificultad'] = dificultad
     receta['Ingredientes'] = lista_ing
-    receta['Ocasion'] = comida
+    receta['Ocasion'] = ocasion
     receta['Elaboracion'] = elaboracion
     receta['Filtros'] = filtros
     print(f"Todos los datos de la receta {nombre} han sido obtenidos.")
